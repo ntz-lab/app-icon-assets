@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2563EB">
+  <meta name="referrer" content="no-referrer">
+  <meta name="apple-mobile-web-app-title" content="ARIA">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>ARIA — TEST</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="48x48" href="https://ntz-lab.github.io/app-icon-assets/favicon/favicon-48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://ntz-lab.github.io/app-icon-assets/favicon/app-icon-180.png">
+  <style>
+    :root { color-scheme: light; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #111827; background: #F5F7FA; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; min-height: 100svh; display: grid; place-items: center; padding: 24px 16px; }
+    main { width: min(100%, 440px); text-align: center; padding: 28px 20px; border: 1px solid #E2E8F0; border-radius: 20px; background: #FFFFFF; }
+    img { display: block; width: 96px; height: 96px; margin: 0 auto 20px; border-radius: 18px; }
+    h1 { margin: 0 0 12px; font-size: 24px; font-weight: 600; }
+    p { color: #475569; line-height: 1.5; }
+    .open { display: inline-flex; justify-content: center; align-items: center; min-height: 44px; padding: 12px 18px; border-radius: 10px; background: #2563EB; color: #FFFFFF; text-decoration: none; font-weight: 600; max-width: 100%; }
+    a:focus-visible { outline: 3px solid #2563EB; outline-offset: 4px; }
+    .install-link { display: inline-block; margin-top: 18px; color: #2563EB; }
+    section { text-align: left; margin-top: 24px; }
+    li { margin: 12px 0; line-height: 1.5; }
+    ul { padding-left: 20px; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <main>
+    <img src="https://ntz-lab.github.io/app-icon-assets/favicon/app-icon-192.png" alt="Symbole ARIA : A avec étoile dorée" width="96" height="96">
+    <h1>ARIA — TEST</h1>
+    <p id="status" role="status">Ouverture…</p>
+    <a class="open" href="https://script.google.com/macros/s/AKfycbyRoK1vDPvjEHgBsVfrDJeRZASATuwqJOYs7hFQ5ZPtIHoSXwjXO5aaiL15gOml7MC13A/exec" rel="noreferrer">Ouvrir ARIA — TEST</a>
+    <br><a class="install-link" href="?installation=1">Ajouter un raccourci</a>
+    <section id="installation" aria-label="Ajouter ARIA à votre appareil" hidden>
+      <p>Ajoutez cette page avant d’ouvrir ARIA. Vérifiez que l’icône proposée est le A avec son étoile.</p>
+      <ul>
+        <li><strong>Android / Chrome :</strong> menu ⋮ → Ajouter à l’écran d’accueil ou Installer, selon ce qui est proposé.</li>
+        <li><strong>iPhone / Safari :</strong> Partager → Sur l’écran d’accueil. Le nom court proposé est ARIA.</li>
+        <li><strong>Mac / Safari :</strong> Partager ou Fichier → Ajouter au Dock, si disponible.</li>
+        <li><strong>Windows / Chrome ou Edge :</strong> menu du navigateur → créer un raccourci ou installer ce site si proposé.</li>
+      </ul>
+      <p>ARIA s’ouvre ensuite sur Google Apps Script. Les contrôles du navigateur peuvent réapparaître et une connexion Google peut être nécessaire.</p>
+    </section>
+    <noscript><p>L’ouverture automatique nécessite JavaScript. Utilisez le bouton ci-dessus.</p></noscript>
+  </main>
+  <script>
+    // No query-string target, credentials, storage, audio or service worker.
+    const destination = "https://script.google.com/macros/s/AKfycbyRoK1vDPvjEHgBsVfrDJeRZASATuwqJOYs7hFQ5ZPtIHoSXwjXO5aaiL15gOml7MC13A/exec";
+    const installationPage = new URLSearchParams(location.search).get('installation') === '1';
+    const installed = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+    if (installationPage && !installed) {
+      document.getElementById('status').textContent = 'Ajouter ARIA à votre appareil';
+      document.getElementById('installation').hidden = false;
+    } else {
+      setTimeout(() => {
+        try { location.replace(destination); }
+        catch (_) { document.getElementById('status').textContent = 'Utilisez le bouton pour ouvrir ARIA.'; }
+      }, 1200);
+    }
+  </script>
+</body>
+</html>
