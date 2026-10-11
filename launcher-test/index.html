@@ -9,12 +9,37 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>ARIA — TEST</title>
+  <script>
+    // Decide and navigate before the document body can be painted.
+    (() => {
+      const installationPage = new URLSearchParams(location.search).get('installation') === '1';
+      const root = document.documentElement;
+      if (installationPage) {
+        root.classList.add('launcher-install');
+        return;
+      }
+      root.classList.add('launcher-pending');
+      const revealFallback = () => {
+        root.classList.remove('launcher-pending');
+        const status = document.getElementById('status');
+        if (status) status.textContent = 'Utilisez le bouton pour ouvrir ARIA.';
+      };
+      const fallbackTimer = setTimeout(revealFallback, 2500);
+      try {
+        location.replace('https://script.google.com/macros/s/AKfycbyRoK1vDPvjEHgBsVfrDJeRZASATuwqJOYs7hFQ5ZPtIHoSXwjXO5aaiL15gOml7MC13A/exec');
+      } catch (_) {
+        clearTimeout(fallbackTimer);
+        revealFallback();
+      }
+    })();
+  </script>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" type="image/png" sizes="48x48" href="https://ntz-lab.github.io/app-icon-assets/favicon/favicon-48.png">
   <link rel="apple-touch-icon" sizes="180x180" href="https://ntz-lab.github.io/app-icon-assets/favicon/app-icon-180.png">
   <style>
     :root { color-scheme: light; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #111827; background: #F5F7FA; }
     * { box-sizing: border-box; }
+    html.launcher-pending body { visibility: hidden; }
     body { margin: 0; min-height: 100vh; min-height: 100svh; display: grid; place-items: center; padding: 24px 16px; }
     main { width: min(100%, 440px); text-align: center; padding: 28px 20px; border: 1px solid #E2E8F0; border-radius: 20px; background: #FFFFFF; }
     img { display: block; width: 96px; height: 96px; margin: 0 auto 20px; border-radius: 18px; }
@@ -49,18 +74,11 @@
     <noscript><p>L’ouverture automatique nécessite JavaScript. Utilisez le bouton ci-dessus.</p></noscript>
   </main>
   <script>
-    // No query-string target, credentials, storage, audio or service worker.
-    const destination = "https://script.google.com/macros/s/AKfycbyRoK1vDPvjEHgBsVfrDJeRZASATuwqJOYs7hFQ5ZPtIHoSXwjXO5aaiL15gOml7MC13A/exec";
+    // Installation is an explicit opt-in; normal launch was already handled in <head>.
     const installationPage = new URLSearchParams(location.search).get('installation') === '1';
-    const installed = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
-    if (installationPage && !installed) {
+    if (installationPage) {
       document.getElementById('status').textContent = 'Ajouter ARIA à votre appareil';
       document.getElementById('installation').hidden = false;
-    } else {
-      setTimeout(() => {
-        try { location.replace(destination); }
-        catch (_) { document.getElementById('status').textContent = 'Utilisez le bouton pour ouvrir ARIA.'; }
-      }, 0);
     }
   </script>
 </body>
